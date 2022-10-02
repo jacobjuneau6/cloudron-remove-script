@@ -1,0 +1,53 @@
+apt -y purge \
+    acl \
+    apparmor \
+    build-essential \
+    cifs-utils \
+    cron \
+    curl \
+    debconf-utils \
+    dmsetup \
+    ipset \
+    iptables \
+    linux-generic \
+    logrotate \
+    nfs-common \
+    openssh-server \
+    pwgen \
+    resolvconf \
+    sshfs \
+    swaks \
+    tzdata \
+    unattended-upgrades \
+    unbound \
+    unzip \
+    xfsprogs
+systemctl start exim4 
+systemctl enable exim4 
+
+# enable bind for good measure (on online.net, kimsufi servers these are pre-installed)
+systemctl start bind9 
+systemctl enable bind9 
+
+# on ovh images dnsmasq seems to run by default
+systemctl start dnsmasq 
+systemctl enable dnsmasq 
+
+# on ssdnodes postfix seems to run by default
+systemctl start postfix 
+systemctl enable postfix 
+
+# on ubuntu 18.04 and 20.04, this is the default. this requires resolvconf for DNS to work further after the enable
+systemctl start systemd-resolved 
+systemctl enable systemd-resolved 
+rm /etc/unbound/unbound.conf.d/cloudron-network.conf
+rm -r /etc/systemd/system/docker.service.d
+curl -sL "https://download.docker.com/linux/ubuntu/dists/${ubuntu_codename}/pool/stable/amd64/containerd.io_1.5.11-1_amd64.deb" -o /tmp/containerd.deb
+curl -sL "https://download.docker.com/linux/ubuntu/dists/${ubuntu_codename}/pool/stable/amd64/docker-ce-cli_${docker_version}~3-0~ubuntu-${ubuntu_codename}_amd64.deb" -o /tmp/docker-ce-cli.deb
+curl -sL "https://download.docker.com/linux/ubuntu/dists/${ubuntu_codename}/pool/stable/amd64/docker-ce_${docker_version}~3-0~ubuntu-${ubuntu_codename}_amd64.deb" -o /tmp/docker.deb
+apt install -y /tmp/containerd.deb  /tmp/docker-ce-cli.deb /tmp/docker.deb
+apt purge -y /tmp/containerd.deb  /tmp/docker-ce-cli.deb /tmp/docker.deb
+apt remove -y nginx-full
+systemctl stop box
+systemctl disable box
+reboot
