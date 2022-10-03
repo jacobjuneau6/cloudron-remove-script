@@ -1,3 +1,5 @@
+mkdir -p /var/logs/
+touch /var/logs/remove.log
 echo "Use tail -f /var/logs/remove.log to monitor proggress."
 apt -y purge \
     acl \
