@@ -7,19 +7,19 @@ apt -y purge \
     cron \
     curl \
     debconf-utils \
-    dmsetup \
-    ipset \
-    iptables \
-    linux-generic \
-    logrotate \
+  #  dmsetup \
+    #ipset \
+   # iptables \
+    #linux-generic \
+  #  logrotate \
     nfs-common \
-    openssh-server \
+ #   openssh-server \
     pwgen \
-    resolvconf \
+#    resolvconf \
     sshfs \
     swaks \
     tzdata \
-    unattended-upgrades \
+#    unattended-upgrades \
     unbound \
     unzip \
     xfsprogs >> /var/logs/remove.log
